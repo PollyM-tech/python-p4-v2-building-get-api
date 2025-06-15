@@ -20,7 +20,17 @@ def index():
     return "Index for Game/Review/User API"
 
 # start building your API here
+@app.route('/games/users/<int:id>')
+def game_users_by_id(id):
+    game = Game.query.filter(Game.id == id).first()
+    users = []
+    users = [user.to_dict(rules=('reviews',)) for user in game.users]
+    response = make_response(
+        users,
+        200
+    )
 
+    return response
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
